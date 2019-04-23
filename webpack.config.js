@@ -88,20 +88,14 @@ version.
 Now the problem is it makes a new file each time but odes not delete the old one. So our dist folder gets
 cluttered really fast. So we use a plugin called Cleanwebapckpack to clear the old files.
 */
-    // new HtmlWebpackPlugin({ // this plugin will generate our src index.html to distt/index.html including the MD5 hash names.
-      // filename: 'subfolder/custom_filename.html',
-      // template: './src/index.hbs',
-      // title: 'Hello World',
-      // description: 'Some description',
-      // meta: {
-      //   viewport: 'width=device-width, inital-scale=1'
-      // }
-      new HtmlWebpackPlugin({
-            filename: 'hello-world.html',
-            chunks: ['hello-world'],
-            title: 'Hello world',
-            description: 'Hello world',
-            template: 'src/index.hbs'
+    new HtmlWebpackPlugin({ // this plugin will generate our src index.html to distt/index.html including the MD5 hash names.
+      filename: 'subfolder/custom_filename.html',
+      template: './src/index.hbs',
+      title: 'Hello World',
+      description: 'Some description',
+      meta: {
+        viewport: 'width=device-width, inital-scale=1'
+      }
 
 
       // We can also give it many different options. Here we specify the title,meta tag and filename.
