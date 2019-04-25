@@ -10,7 +10,8 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, './distt'),
-    publicPath: '../'
+    publicPath: ''//we use ../ and not '' because we created another_folder dir so then then bundle js
+    //understand where to findi t
     /*PublicPath tells Webpack where all the generated files are located. If you would deploy this to the internet you would use your
     server name for example: 'http://my-website.com/'. Now we are using html-webpack-plugin so the public folder will no longer be
     'distt' but empty because we dont want our new index.html to have a path for our css and js with distt/ because now they are in
@@ -84,7 +85,7 @@ Now the problem is it makes a new file each time but odes not delete the old one
 cluttered really fast. So we use a plugin called Cleanwebapckpack to clear the old files.
 */
     new HtmlWebpackPlugin({ // this plugin will generate our src index.html to distt/index.html including the MD5 hash names.
-      filename: 'other_folder/index.html',
+      filename: 'index.html',
       template: './src/index.hbs',
       title: 'Hello World',
       description: 'Some description',

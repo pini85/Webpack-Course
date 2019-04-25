@@ -7,11 +7,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 // We need to generate an absolute path for our output. This module will help us.
 module.exports = {
   //This file usually imports all other dependencies. Webpack will start from this file when running the build process.
-  entry: './src/index.js',
+  // entry: './src/index.js', // single bundle
+  entry: {
+    'hello-world': './src/hello-world.js',
+    'kiwi': './src/kiwi.js'// here we are using two js files.
+  },
   output: {
-    filename: 'bundle[contenthash].js',
+    // filename: 'bundle[contenthash].js',//single bundle
+    filename: '[name].[contenthash].js',//this will use the name of the property from the entry object and will produce two bundle js.
     path: path.resolve(__dirname, './distt'),
-    publicPath: '../'
+    publicPath: ''
     /*PublicPath tells Webpack where all the generated files are located. If you would deploy this to the internet you would use your
     server name for example: 'http://my-website.com/'. Now we are using html-webpack-plugin so the public folder will no longer be
     'distt' but empty because we dont want our new index.html to have a path for our css and js with distt/ because now they are in
@@ -19,6 +24,20 @@ module.exports = {
     */
   },
   mode: 'production',
+  /*
+  We specified lodash twice for the kiwi page and also the hello world page. Webpack gave both pages the lodash libary. We want one
+  libary to share for both of them so it wont get too much data. So we specifiy optimization
+
+  This indicates which chunks will be selected for optimization. When a string is provided, valid values are all, async,
+  and initial. Providing all can be particularly powerful, because it means that chunks can be shared even between async and
+  non-async chunks.
+  */
+  optimization: {
+    splitChunks: {
+      chunks: "all"
+    }
+
+  },
   module: {
     rules: [
       {
@@ -76,7 +95,9 @@ module.exports = {
   plugins: [
     // new TerserPlugin(),//this plugin minifies our bundle.js. We dont need to include this in production. It is already added.
     new MiniCssExtractPlugin({
-      filename: 'style[contenthash].css'
+      // filename: 'style[contenthash].css'//single bundle
+      filename: '[name][contenthash].css'//we also want separate names from our css
+
     }), // What we have is the bundle.js also includes our css styles. Thep problem here is that the js file can get really big and
     //loading times will take longer. So we seperate our css into a different file
     new CleanWebpackPlugin(),
@@ -88,8 +109,10 @@ Now the problem is it makes a new file each time but odes not delete the old one
 cluttered really fast. So we use a plugin called Cleanwebapckpack to clear the old files.
 */
     new HtmlWebpackPlugin({ // this plugin will generate our src index.html to distt/index.html including the MD5 hash names.
-      filename: 'other_folder/custom_filename.html',
-      template: './src/index.hbs',
+      filename: 'hello-world.html',
+      chunks:['hello-world','vendors~hello-world~hellow-kiwi'],//which bundles do we include in this html page. Chunks
+      //name are specified in the entry object.
+      template: './src/page-template.hbs',
       title: 'Hello World',
       description: 'Some description',
       meta: {
@@ -97,6 +120,16 @@ cluttered really fast. So we use a plugin called Cleanwebapckpack to clear the o
       }
       // We can also give it many different options. Here we specify the title,meta tag and filename.
 
+    }),
+     new HtmlWebpackPlugin({
+      filename: 'kiwi.html',
+      chunks:['kiwi','vendors~hello-world~kiwi'],
+      template: './src/page-template.hbs',
+      title: 'Kiwi',
+      description: 'Some description2',
+      meta: {
+        viewport: 'width=device-width, initial-scale=1'
+      }
     })
   ]
 };

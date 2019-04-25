@@ -6,7 +6,7 @@ class HelloWorldButton {
     button.classList.add(this.buttonCssClass);
     //We use a property in our class not a method. And it is not supported in all browsers. So use babel to transpile it.
     const body = document.querySelector('body');
-    button.innerHTML = 'Hello world';
+    button.innerHTML= 'Hello world';
     button.onclick = () => {
       const p = document.createElement('p');
       p.innerHTML = 'Hello World';
