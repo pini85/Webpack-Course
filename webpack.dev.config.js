@@ -6,9 +6,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 // We need to generate an absolute path for our output. This module will help us.
 module.exports = {
   //This file usually imports all other dependencies. Webpack will start from this file when running the build process.
-  entry: './src/index.js',
+  entry: {
+    'hello-world': './src/hello-world.js',
+    'kiwi': './src/kiwi.js'
+  },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, './distt'),
     publicPath: ''//we use ../ and not '' because we created another_folder dir so then then bundle js
     //understand where to findi t
@@ -21,7 +24,7 @@ module.exports = {
   mode: 'development',
   devServer: {
         contentBase: path.resolve(__dirname, './distt'),
-        index: 'index.html',
+        index: 'hello-world.html',
         port: 9000
   },
   module: {
@@ -85,17 +88,25 @@ Now the problem is it makes a new file each time but odes not delete the old one
 cluttered really fast. So we use a plugin called Cleanwebapckpack to clear the old files.
 */
     new HtmlWebpackPlugin({ // this plugin will generate our src index.html to distt/index.html including the MD5 hash names.
-      filename: 'index.html',
-      template: './src/index.hbs',
+      filename: 'hello-world.html',
+      template: './src/page-template.hbs',
+      chunks: ['hello-world'],
       title: 'Hello World',
       description: 'Some description',
       meta: {
         viewport: 'width=device-width, initial-scale=1'
       }
-
-
       // We can also give it many different options. Here we specify the title,meta tag and filename.
-
+    }),
+     new HtmlWebpackPlugin({
+      filename: 'kiwi.html',
+      template: './src/page-template.hbs',
+      chunks: ['kiwi'],
+      title: 'Kiwi',
+      description: 'Kiwi',
+      meta: {
+        viewport: 'width=device-width, initial-scale=1'
+      }
     })
   ]
 };

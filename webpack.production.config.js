@@ -110,7 +110,7 @@ cluttered really fast. So we use a plugin called Cleanwebapckpack to clear the o
 */
     new HtmlWebpackPlugin({ // this plugin will generate our src index.html to distt/index.html including the MD5 hash names.
       filename: 'hello-world.html',
-      chunks:['hello-world','vendors~hello-world~hellow-kiwi'],//which bundles do we include in this html page. Chunks
+      chunks:['hello-world','vendors~hello-world~kiwi'],//which bundles do we include in this html page. Chunks
       //name are specified in the entry object.
       template: './src/page-template.hbs',
       title: 'Hello World',

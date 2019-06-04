@@ -5,5 +5,5 @@ import _ from 'lodash';
 const heading = new Heading
 heading.render(_.upperCase('smiley face page'));
 
-const kiwiImage = new KiwiImage();
+const kiwiImage = new KiwiImage
 kiwiImage.render();
